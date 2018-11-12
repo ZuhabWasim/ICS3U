@@ -1,0 +1,8 @@
+Book, 3, 9.51
+Pen, 5, 2.93
+Paper, 1, 13.95
+Desk, 1, 84.99
+Computer, 3, 299.99
+Stapler, 7, 1.99
+Calculator, 15, 2.35
+File Cabinet, 3, 399.19
