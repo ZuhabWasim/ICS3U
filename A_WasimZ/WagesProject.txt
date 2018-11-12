@@ -1,0 +1,89 @@
+'Programmer: Zuhab Wasim 
+'Data: November 15, 2015
+'Purpose: To retrieve the information in a text file and displays the information related to it 
+
+
+'Declares certain values as CONSTANTS due to the possibility of the value changing in the future
+Const DEDUCTION = 0.25
+Const OVERTIMEBONUS = 1.5
+
+'Declares the variables used within the program
+Dim LastName As String
+Dim Path As String
+
+'Each variable with "R" at the beginning is the variable that will have the right aligned value of the given variable
+Dim Wage As Single
+Dim RWage As String * 6
+
+Dim Hours As Single
+Dim RHours As Single * 6
+Dim OverTimeHours As Single
+Dim NonOverTimeHours As Single
+
+Dim GrossPay As Single
+Dim RGrossPay As Single * 10
+
+Dim NetPay As Single
+Dim RNetPay As Single * 10
+
+Dim EmployeeCount As Integer
+Dim NetPayAverage As Single
+Dim NetPaySum As Single
+
+'Clears the picture box of anything that was displayed on it previously
+picData.Cls
+
+'Creates the headers for the columns of the values soon to be listed
+picData.Print Tab(4); "EMPLOYEE NAME"; Tab(25); "WAGE"; Tab(35); "HOURS"; Tab(45); "GROSS PAY"; Tab(55); "NET PAY"
+
+'Initializes the given values to a number to avoid issues with incremented values such as crashes
+EmployeeCount = 0
+NetPaySum = 0
+Path = App.Path
+
+'Checks to see if the path information is usable (having a "\" at the end)
+'Places a "\" to allow the path information to be usable
+If Right$(Path,1) <> "\" Then
+	Path = Path & "\"
+End If
+
+'Opens file to be used (#1)
+Open Path & "wages.txt" For Input As #1
+
+'Continues the loop as long as the file has still information to be read in it
+Do While Not EOF(1)
+	EmployeeCount = EmployeeCount + 1
+	Input #1, LastName, Wage, Hours	
+	OverTimeHours = Hours Mod 40
+	NonOverTimeHours = Hours - OverTimeHours
+	'Does the multiplication of the NonOverTimeHours and adds it to the the product of the Overtime Hours multiplied with the given overtime bonus
+	GrossPay = (NonOverTimeHours * Wage) + ((OverTimeHours * Wage) * OVERTIMEBONUS)
+	NetPay = GrossPay * DEDUCTION 
+	NetPaySum = NetPaySum + NetPay
+	'Right aligns the values listed previously into new variables that have the corresponding name 
+	'Formats the values listed before into a currency standard
+	RSet RWage = Format$(Wage, "$ ##00.00")
+	RSet RHours = Format$(Wage, " ###0.0#")
+	RSet RGrossPay = Format$(Wage, "$ ####00.00")
+	RSet RNetPay = Format$(Wage, "$ ####00.00")
+	'Displays the values into the picture box
+	picData.Print "  " & EmployeeCount & ". "; LastName; Tab(25); RWage; Tab(35); RHours; Tab(45); RGrossPay; Tab(55); RNetPay
+Loop
+
+'Closes the file that was used (which was #1)
+Close #1
+
+"Checks to see if the value of EmployeeCount is not zero to avoid crashing the program
+If EmployeeCount = 0 Then
+	NetPayAverage = 0
+Else
+	NetPayAverage = NetPaySum / EmployeeCount
+End If
+
+"Displays the employee count and average net pay
+picData.Print
+picData.Print "Number of employees is: "; EmployeeCount
+picData.Print "The average net pay is: "; Format$(NetPayAverage,"currency")
+
+
+

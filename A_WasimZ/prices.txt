@@ -1,0 +1,5 @@
+Bananas, 2
+Apple, 5.50
+Grapes, 6
+Oatmeal, 10
+Chicken, 5.20
